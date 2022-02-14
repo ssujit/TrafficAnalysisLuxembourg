@@ -8,3 +8,7 @@ Some example graps -
 ![image1](https://github.com/JyotirmayaIjaradar/TrafficAnalysisLuxembourg/blob/master/result/Daily%20Traffic%20Volume%20Analysis%20between%20Germany%20and%20Luxembourg%20in%202018.png)
 
 ![image2](https://github.com/JyotirmayaIjaradar/TrafficAnalysisLuxembourg/blob/master/result/Daily%20Traffic%20Volume%20Analysis%20between%20Germany%20and%20Luxembourg%20in%202020.png)
+
+Calender heatmap for daily traffic:
+
+![image3](https://github.com/JyotirmayaIjaradar/TrafficAnalysisLuxembourg/blob/master/result/heat_map_whole_day.jpg)
