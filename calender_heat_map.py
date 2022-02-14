@@ -2,20 +2,31 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import calplot
-import july
 
-def cal_heat_map(year):
-    data = pd.read_csv('C:/Users/jyoti/Downloads/donneestrafic-'+str(year)+'.csv')
-    data['DATECOM'] = pd.to_datetime(data['DATECOM'])
-    data.set_index('DATECOM', inplace=True)
-    data = data[data.DIRECTION == 3]
-    data = data[data.VEHICULE == 'C']
-    # data = data.ROUTE = ['A1', 'A3', 'A7']
-    # print(data)
-    pil = calplot.calplot(data=data['SUM_TRAF'], cmap='GnBu', dropzero=True, figsize=(16, 4), suptitle="Total cars in in everyday")
-    plt.savefig('result/heat_map_'+str(year)+'.jpg')
+data1 = pd.read_csv('C:/Users/jyoti/Downloads/donneestrafic-2018.csv')
+data1['DATECOM'] = pd.to_datetime(data1['DATECOM'])
+data1 = data1[data1.DIRECTION == 3]
+data1 = data1[data1.VEHICULE == 'C']
 
+data2 = pd.read_csv('C:/Users/jyoti/Downloads/donneestrafic-2020.csv')
+data2['DATECOM'] = pd.to_datetime(data2['DATECOM'])
+data2 = data2[data2.DIRECTION == 3]
+data2 = data2[data2.VEHICULE == 'C']
 
-cal_heat_map(2018)
-cal_heat_map(2020)
+data = pd.concat([data1, data2])
+# data = data[(data.ROUTE == 'A1') | (data.ROUTE == 'A3') | (data.ROUTE == 'A7')]
+mor_hrs = ['P07_08', 'P08_09', 'P09_10']
+evn_hrs = ['P16_17', 'P17_18', 'P18_19']
+data['MORNING_HOURS'] = data[mor_hrs].sum(axis=1)
+data['EVENING_HOURS'] = data[evn_hrs].sum(axis=1)
+data.set_index('DATECOM', inplace=True)
+
+pil = calplot.calplot(data=data['SUM_TRAF'], cmap='GnBu', dropzero=True, figsize=(16, 6), suptitle="Total cars in everyday")
+plt.savefig('result/heat_map_whole_day.jpg')
+
+pil = calplot.calplot(data=data['MORNING_HOURS'], cmap='GnBu', dropzero=True, figsize=(16, 6), suptitle="Total cars in everyday")
+plt.savefig('result/heat_map_morning.jpg')
+
+pil = calplot.calplot(data=data['EVENING_HOURS'], cmap='GnBu', dropzero=True, figsize=(16, 6), suptitle="Total cars in everyday")
+plt.savefig('result/heat_map_evening.jpg')
 
