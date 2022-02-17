@@ -105,12 +105,12 @@ def stack_area_chart(T, title, limit=40000, step=5000, route="A"):
         w_d = test[T][test.DATECOM.dt.day_name() != 'Saturday'][test.DATECOM.dt.day_name() != 'Sunday'].groupby(
             test.DATECOM.dt.month_name(), sort=False).sum()
     else:
-        Saturday = test['EVENING_HOURS'][test.ROUTE == route][test.DATECOM.dt.day_name() == 'Saturday'].groupby(
+        Saturday = test[T][test.ROUTE == route][test.DATECOM.dt.day_name() == 'Saturday'].groupby(
             test.DATECOM.dt.month_name(), sort=False).sum().tolist()
-        Sunday = test['EVENING_HOURS'][test.ROUTE == route][test.DATECOM.dt.day_name() == 'Sunday'].groupby(
+        Sunday = test[T][test.ROUTE == route][test.DATECOM.dt.day_name() == 'Sunday'].groupby(
             test.DATECOM.dt.month_name(), sort=False).sum().tolist()
 
-        w_d = test['EVENING_HOURS'][test.ROUTE == route][test.DATECOM.dt.day_name() != 'Saturday'][
+        w_d = test[T][test.ROUTE == route][test.DATECOM.dt.day_name() != 'Saturday'][
             test.DATECOM.dt.day_name() != 'Sunday'].groupby(test.DATECOM.dt.month_name(), sort=False).sum()
 
     Month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
@@ -122,7 +122,7 @@ def stack_area_chart(T, title, limit=40000, step=5000, route="A"):
     palette = sns.color_palette("rocket_r", 9).as_hex()
     colors = ','.join(palette)
     labels = ("Saturday", "Sunday", "Weekdays")
-    plt.figure(dpi=150)
+    plt.figure(figsize=[9.2, 7.8], dpi=120)
     plt.stackplot(Month, Saturday, Sunday, Weekdays, colors=colors, labels=labels)
     # plt.legend(loc='upper center', bbox_to_anchor=(1.1, 0.8), shadow=True, ncol=1)
     plt.xticks(Month, rotation=30)
@@ -160,7 +160,11 @@ test['DATECOM'] = pd.to_datetime(test['DATECOM'])
 
 # line_chart(T="M", title=title, route="A1", limit=5000, step=500)
 stack_area_chart(T="M", title="Luxembourg Traffic Volume in Morning Rush Hours 2020", limit=55000, step=5000)
-stack_area_chart(T="E", title="Luxembourg Traffic Volume in Evening Rush Hours 2020", limit=50000, step=5000)
-stack_area_chart(T="M", title="Luxembourg Traffic Volume in Morning Rush Hours between Germany 2020", route="A1", limit=8000, step=1000)
-stack_area_chart(T="E", title="Luxembourg Traffic Volume in Evening Rush Hours between Germany 2020", route="A1", limit=6000, step=1000)
+stack_area_chart(T="E", title="Luxembourg Traffic Volume in Evening Rush Hours 2020", limit=55000, step=5000)
+stack_area_chart(T="M", title="Luxembourg Traffic Volume in Morning Rush Hours between Germany 2020", route="A1", limit=11000, step=1000)
+stack_area_chart(T="E", title="Luxembourg Traffic Volume in Evening Rush Hours between Germany 2020", route="A1", limit=11000, step=1000)
+stack_area_chart(T="M", title="Luxembourg Traffic Volume in Morning Rush Hours between France 2020", route="A3", limit=13000, step=1000)
+stack_area_chart(T="E", title="Luxembourg Traffic Volume in Evening Rush Hours between France 2020", route="A3", limit=13000, step=1000)
+stack_area_chart(T="M", title="Luxembourg Traffic Volume in Morning Rush Hours between Belgium 2020", route="A7", limit=5000, step=500)
+stack_area_chart(T="E", title="Luxembourg Traffic Volume in Evening Rush Hours between Belgium 2020", route="A7", limit=5000, step=500)
 # bar_chart(Saturday, Sunday, Weekdays, title)
