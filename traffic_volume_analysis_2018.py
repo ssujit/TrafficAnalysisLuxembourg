@@ -135,6 +135,48 @@ def stack_area_chart(T, title, limit=40000, step=5000, route="A"):
     plt.show()
 
 
+def stack_area_chart2(T, title, limit=40000, step=5000, route="A"):
+    if T == "M":
+        T = 'MORNING_HOURS'
+    elif T == "E":
+        T = 'EVENING_HOURS'
+    if route == "A":
+        Saturday = test[T][test.DATECOM.dt.day_name() == 'Saturday'].groupby(test.DATECOM.dt.month_name(),
+                                                                             sort=False).sum().tolist()
+        Sunday = test[T][test.DATECOM.dt.day_name() == 'Sunday'].groupby(test.DATECOM.dt.month_name(),
+                                                                         sort=False).sum().tolist()
+        w_d = test[T][test.DATECOM.dt.day_name() != 'Saturday'][test.DATECOM.dt.day_name() != 'Sunday'].groupby(
+            test.DATECOM.dt.month_name(), sort=False).sum()
+    else:
+        Saturday = test[T][test.ROUTE == route][test.DATECOM.dt.day_name() == 'Saturday'].groupby(
+            test.DATECOM.dt.month_name(), sort=False).sum().tolist()
+        Sunday = test[T][test.ROUTE == route][test.DATECOM.dt.day_name() == 'Sunday'].groupby(
+            test.DATECOM.dt.month_name(), sort=False).sum().tolist()
+
+        w_d = test[T][test.ROUTE == route][test.DATECOM.dt.day_name() != 'Saturday'][
+            test.DATECOM.dt.day_name() != 'Sunday'].groupby(test.DATECOM.dt.month_name(), sort=False).sum()
+
+    Month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+             "November", "December"]
+    Weekdays = []
+    for number in w_d:
+        Weekdays.append(number / 5)
+
+    palette = sns.color_palette("rocket_r", 9).as_hex()
+    colors = ','.join(palette)
+    labels = ("Saturday", "Sunday", "Weekdays")
+    plt.figure(figsize=[9.2, 7.8], dpi=120)
+    plt.stackplot(Month, Saturday, Sunday, Weekdays, colors=colors, labels=labels)
+    # plt.legend(loc='upper center', bbox_to_anchor=(1.1, 0.8), shadow=True, ncol=1)
+    plt.xticks(Month, rotation=30)
+    plt.yticks(np.arange(0, limit, step=step))
+    plt.xlabel("Time")
+    plt.ylabel('Total Number of Cars')
+    plt.legend()
+    plt.title(title)
+    plt.savefig("result/stacked_chart_traffic_analysis_"+T+"_"+route+"_2018.jpg")
+    plt.show()
+
 # Read and prepare dataframe
 test = pd.read_csv('data/twoway_cars_traffic_2018_complete.csv')
 mor_hrs = ['P07_08', 'P08_09', 'P09_10']
