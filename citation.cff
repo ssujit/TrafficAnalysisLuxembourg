@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Ijaradar
+    given-names: Jyotirmaya 
+    orcid: https://orcid.org/0000-0002-8450-4550
+    
+  - family-names: Sikder
+    given-names: Sujit Kumar
+    orcid: https://orcid.org/0000-0002-0265-7394
+    
+version: 1.0.0
+doi: will be given soon
+date-released: 22023-MM-DD
+url: "https://github.com/ssujit/TrafficAnalysisLuxembourg"
